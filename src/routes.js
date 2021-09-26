@@ -65,11 +65,14 @@ const ChannelAdd = React.lazy(() =>
   import("./views/channel/ChannelAddOrUpdate")
 );
 
+const Videos = React.lazy(() => import("./views/video/VideoList"));
+
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
   { path: "/channels", name: "Channel", component: Channels, exact: true },
   { path: "/channels/add", name: "Channel Add", component: ChannelAdd },
+  { path: "/videos", name: "Video", component: Videos, exact: true },
 
   { path: "/theme", name: "Theme", component: Colors, exact: true },
   { path: "/theme/colors", name: "Colors", component: Colors },

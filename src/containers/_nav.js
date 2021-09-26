@@ -23,6 +23,11 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavItem",
+    name: "Videos",
+    to: "/videos",
+  },
+  {
+    _tag: "CSidebarNavItem",
     name: "Tables",
     to: "/base/tables",
   },
