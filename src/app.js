@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Router, Route, Switch } from "react-router-dom";
+import { PrivateRoute } from "./routes/PrivateRoutes";
+import { History } from "./helpers";
+import indexRoutes from "./routes/";
 import "./scss/style.scss";
 
 const loading = (
@@ -20,7 +23,7 @@ const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 class App extends Component {
   render() {
     return (
-      <HashRouter>
+      <Router history={History}>
         <React.Suspense fallback={loading}>
           <Switch>
             <Route
@@ -29,7 +32,16 @@ class App extends Component {
               name="Login Page"
               render={(props) => <Login {...props} />}
             />
-            <Route
+            {indexRoutes.map((prop, key) => {
+              return (
+                <PrivateRoute
+                  path={prop.path}
+                  key={key}
+                  component={prop.component}
+                />
+              );
+            })}
+            {/* <Route
               exact
               path="/register"
               name="Register Page"
@@ -51,10 +63,10 @@ class App extends Component {
               path="/"
               name="Home"
               render={(props) => <TheLayout {...props} />}
-            />
+            /> */}
           </Switch>
         </React.Suspense>
-      </HashRouter>
+      </Router>
     );
   }
 }

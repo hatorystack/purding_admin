@@ -1,24 +1,28 @@
-import 'react-app-polyfill/ie11'; // For IE 11 support
-import 'react-app-polyfill/stable';
-import 'core-js';
-import './polyfill'
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './app';
-import * as serviceWorker from './serviceWorker';
+import "react-app-polyfill/ie11"; // For IE 11 support
+import "react-app-polyfill/stable";
+import "core-js";
+import "./polyfill";
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./app";
+import * as serviceWorker from "./serviceWorker";
 
-import { icons } from './assets/icons'
+import { icons } from "./assets/icons";
 
-import { Provider } from 'react-redux'
-import store from './store'
+import { Provider } from "react-redux";
+import { configureStore } from "./redux/Store";
 
-React.icons = icons
+import dotenv from "dotenv";
+
+React.icons = icons;
+
+dotenv.config();
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App/>
+  <Provider store={configureStore()}>
+    <App />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

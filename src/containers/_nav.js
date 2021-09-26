@@ -12,10 +12,14 @@ const _nav = [
       text: "NEW",
     },
   },
-  ,
+  // {
+  //   _tag: "CSidebarNavTitle",
+  //   _children: ["Theme"],
+  // },
   {
-    _tag: "CSidebarNavTitle",
-    _children: ["Theme"],
+    _tag: "CSidebarNavItem",
+    name: "Channels",
+    to: "/channels",
   },
   {
     _tag: "CSidebarNavItem",
