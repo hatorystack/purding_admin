@@ -5,6 +5,7 @@ const INIT_STATE = {
   message: "",
   list: [],
   total_cnt: 0,
+  total_page: 0,
 };
 
 const VideoListReducer = (state = INIT_STATE, action) => {
@@ -16,6 +17,7 @@ const VideoListReducer = (state = INIT_STATE, action) => {
         message: action.message,
         list: action.list,
         total_cnt: action.total_cnt,
+        total_page: action.total_page,
       };
     default:
       return state;

@@ -21,7 +21,7 @@ export const channelList = (
     })
       .then((response) => {
         const data = response;
-
+        console.log(data);
         dispatch({
           type: CHANNEL_LIST,
           code: response.code,
