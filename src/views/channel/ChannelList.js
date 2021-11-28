@@ -39,7 +39,13 @@ const ChannelList = () => {
   const channelYoutubeVideoUpdateStore = useSelector((state) => state.channelReducer.channelYoutubeVideoUpdate);
   const [page, setPage] = useState(1);
 
-  const callChannelYoutubeVideo = (channelId, youtubeChannelId) => {
+  const callAllChannelYoutubeVideoUpdate = () => {
+    dispatch(
+      allChannelVideoUpdate()
+    );
+  };
+
+  const callChannelYoutubeVideoUpdate = (channelId, youtubeChannelId) => {
     dispatch(
       channelVideoUpdate({
         channel_id: channelId,
@@ -83,7 +89,7 @@ const ChannelList = () => {
                 </CButton>
               </CCol>
               <CCol col="6" sm="4" md="3" className="mb-3 mb-xl-0">
-                <CButton block color="danger" className="text-light">
+                <CButton block color="danger" className="text-light" onClick={() => callAllChannelYoutubeVideoUpdate()}>
                     Update All Channel Videos
                 </CButton>
               </CCol>
@@ -101,7 +107,7 @@ const ChannelList = () => {
                 scopedSlots={{
                   update_video: (item) => (
                     <td>
-                      <CButton block size="sm" color="danger" onClick={() => callChannelYoutubeVideo(item.id, item.channel_id)}>
+                      <CButton block size="sm" color="danger" onClick={() => callChannelYoutubeVideoUpdate(item.id, item.channel_id)}>
                         Update Video
                       </CButton>
                     </td>
