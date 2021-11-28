@@ -19,17 +19,17 @@ export const channelList = (
     return ApiResponse("/channellist", {
       dispatch,
       data: { ...params },
-      method: "get",
+      method: "post",
     })
       .then((response) => {
         const data = response;
-        console.log(data);
         dispatch({
           type: CHANNEL_LIST,
           code: response.code,
           message: response.message,
           list: isEmpty(data) ? null : data.list,
           total_cnt: isEmpty(data) ? null : data.total_cnt,
+          total_page: isEmpty(data) ? null : data.total_page,
         });
       })
       .catch((err) => console.log(err + "action"));

@@ -1,6 +1,6 @@
 import React, { lazy, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { channelList, channelVideoUpdate } from "../../redux/channel/Action";
+import { channelList, channelVideoUpdate, allChannelVideoUpdate } from "../../redux/channel/Action";
 import { Link } from "react-router-dom";
 
 import {
@@ -38,6 +38,9 @@ const ChannelList = () => {
   const channelStore = useSelector((state) => state.channelReducer.channelList);
   const channelYoutubeVideoUpdateStore = useSelector((state) => state.channelReducer.channelYoutubeVideoUpdate);
   const [page, setPage] = useState(1);
+  const per_page = 15;
+
+  console.log(page);
 
   const callAllChannelYoutubeVideoUpdate = () => {
     dispatch(
@@ -58,6 +61,7 @@ const ChannelList = () => {
     dispatch(
       channelList({
         page,
+        per_page,
       })
     );
   };
@@ -72,7 +76,7 @@ const ChannelList = () => {
     }
   }, [channelYoutubeVideoUpdateStore]);
 
-  useEffect(() => {}, [channelStore.list]);
+  // useEffect(() => {}, [channelStore.list]);
 
   return (
     <>
@@ -114,13 +118,13 @@ const ChannelList = () => {
                   ),
                 }}
               />
-            </CCardBody>
-            <CPagination
+              <CPagination
                 size="sm"
                 activePage={page}
                 pages={channelStore.total_page}
                 onActivePageChange={setPage}
               />
+            </CCardBody>
           </CCard>
         </CCol>
       </CRow>
