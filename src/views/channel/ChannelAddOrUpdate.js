@@ -78,7 +78,6 @@ const ChannelAddOrUpdate = () => {
   };
 
   useEffect(() => {
-    console.log(channelStore);
     if (channelStore.message === "ok") {
       alert("등록 되었습니다.");
       window.location.href = `/channels`;

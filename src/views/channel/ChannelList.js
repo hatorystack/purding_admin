@@ -1,6 +1,6 @@
 import React, { lazy, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { channelList } from "../../redux/channel/Action";
+import { channelList, channelVideoUpdate } from "../../redux/channel/Action";
 import { Link } from "react-router-dom";
 
 import {
@@ -12,6 +12,7 @@ import {
   CCol,
   CDataTable,
   CRow,
+  CPagination,
 } from "@coreui/react";
 
 import usersData from "../users/UsersData";
@@ -30,12 +31,22 @@ const getBadge = (status) => {
       return "primary";
   }
 };
-const fields = ["id", "language", "channel_title", "channel_id", "created_at"];
+const fields = ["id", "language", "channel_title", "channel_id", "created_at", "update_video"];
 
 const ChannelList = () => {
   const dispatch = useDispatch();
   const channelStore = useSelector((state) => state.channelReducer.channelList);
+  const channelYoutubeVideoUpdateStore = useSelector((state) => state.channelReducer.channelYoutubeVideoUpdate);
   const [page, setPage] = useState(1);
+
+  const callChannelYoutubeVideo = (channelId, youtubeChannelId) => {
+    dispatch(
+      channelVideoUpdate({
+        channel_id: channelId,
+        youtube_channel_id: youtubeChannelId,
+      })
+    );
+  };
 
   const callChannelListApi = () => {
     dispatch(
@@ -48,6 +59,12 @@ const ChannelList = () => {
   useEffect(() => {
     callChannelListApi();
   }, [page]);
+
+  useEffect(() => {
+    if (channelYoutubeVideoUpdateStore.message === "ok") {
+      alert("등록 되었습니다.");
+    }
+  }, [channelYoutubeVideoUpdateStore]);
 
   useEffect(() => {}, [channelStore.list]);
 
@@ -65,6 +82,11 @@ const ChannelList = () => {
                   </Link>
                 </CButton>
               </CCol>
+              <CCol col="6" sm="4" md="3" className="mb-3 mb-xl-0">
+                <CButton block color="danger" className="text-light">
+                    Update All Channel Videos
+                </CButton>
+              </CCol>
             </CRow>
             <CCardBody>
               <CDataTable
@@ -77,16 +99,22 @@ const ChannelList = () => {
                 itemsPerPage={15}
                 pagination
                 scopedSlots={{
-                  status: (item) => (
+                  update_video: (item) => (
                     <td>
-                      <CBadge color={getBadge(item.status)}>
-                        {item.status}
-                      </CBadge>
+                      <CButton block size="sm" color="danger" onClick={() => callChannelYoutubeVideo(item.id, item.channel_id)}>
+                        Update Video
+                      </CButton>
                     </td>
                   ),
                 }}
               />
             </CCardBody>
+            <CPagination
+                size="sm"
+                activePage={page}
+                pages={channelStore.total_page}
+                onActivePageChange={setPage}
+              />
           </CCard>
         </CCol>
       </CRow>

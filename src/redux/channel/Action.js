@@ -1,5 +1,7 @@
 import { CHANNEL_LIST } from "../Constants";
 import { CHANNEL_ADD } from "../Constants";
+import { ALL_CHANNEL_VIDEO_UPDATE } from "../Constants";
+import { CHANNEL_VIDEO_UPDATE } from "../Constants";
 
 import ApiResponse from "../../service/apiResponse";
 import { isEmpty } from "lodash";
@@ -62,3 +64,48 @@ export const channelAdd = (
       .catch((err) => console.log(err + "action"));
   };
 };
+
+// All Channel Video Update
+export const allChannelVideoUpdate = () => {
+  return (dispatch) => {
+    return ApiResponse("/admin/saveallchannelyoutubevideo", {
+      dispatch,
+      data: {},
+      method: "post",
+    })
+      .then((response) => {
+        dispatch({
+          type: ALL_CHANNEL_VIDEO_UPDATE,
+          code: response.code,
+          message: response.message,
+          data: response.data,
+        });
+      })
+      .catch((err) => console.log(err + "action"));
+  }
+}
+
+// Channel Video Update
+export const channelVideoUpdate = (
+  params = {
+    channel_id: "",
+    youtube_channel_id: "",
+  }
+) => {
+  return (dispatch) => {
+    return ApiResponse("/admin/savechannelyoutubevideo", {
+      dispatch,
+      data: { ...params },
+      method: "post",
+    })
+      .then((response) => {
+        dispatch({
+          type: CHANNEL_VIDEO_UPDATE,
+          code: response.code,
+          message: response.message,
+          data: response.data,
+        });
+      })
+      .catch((err) => console.log(err + "action"));
+  }
+}
