@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { tagAdd, tagDelete } from "src/redux/tag/Action";
-import { videoTagging, videoReset, videoUpdate } from "src/redux/video/Action";
+import { videoTagging, videoReset, videoUpdate, detachTagging } from "src/redux/video/Action";
 import { useHistory } from "react-router-dom";
 
 import CIcon from "@coreui/icons-react";
@@ -12,6 +12,9 @@ const TagsInput = ({ videoitem }) => {
   const dispatch = useDispatch();
   const [tags, setTags] = useState([]);
   const [videoStatus, setVideoStatus] = useState(videoitem.item.status);
+  const [detachTaggingList, setDetachTaggingList] = useState([]);
+
+  console.log("videoitem", videoitem);
 
   const tagAddStore = useSelector((state) => state.tagReducer.tagAdd);
   const videoTaggingStore = useSelector(
@@ -22,9 +25,11 @@ const TagsInput = ({ videoitem }) => {
   //   (state) => state.videoReducer.videoUpdate
   // );
 
+  console.log("videoitem.item.tags", videoitem.item.tags);
+  console.log("videoTaggingStore.message", videoTaggingStore.message);
+
   useEffect(() => {
     if (videoTaggingStore.message === "ok") {
-      setTags([]);
       dispatch(videoReset());
       history.goBack();
     }
@@ -33,10 +38,6 @@ const TagsInput = ({ videoitem }) => {
   useEffect(() => {
     setTags(videoitem.item.tags);
   }, [videoitem]);
-
-  console.log("tags", tags);
-  console.log("videoitem:", videoitem);
-  console.log("videoTagStore:", videoTaggingStore);
 
   const addTags = (event) => {
     if (event.key === "Enter" && event.target.value !== "") {
@@ -51,6 +52,7 @@ const TagsInput = ({ videoitem }) => {
   };
 
   const removeTags = (index) => {
+    setDetachTaggingList([...detachTaggingList, tags[index]]);
     dispatch(
       tagDelete({
         name: tags[index],
@@ -58,16 +60,31 @@ const TagsInput = ({ videoitem }) => {
     );
     setTags([...tags.filter((tag) => tags.indexOf(tag) !== index)]);
   };
-
+console.log("detachTaggingList", detachTaggingList);
   const saveTagging = () => {
-    tags.forEach((item) => {
-      dispatch(
-        videoTagging({
-          video_id: videoitem.item.id,
-          tag_id: item.id,
-        })
-      );
-    });
+    if (detachTaggingList.length > 0) {
+      detachTaggingList.forEach((item) => {
+        dispatch(
+          detachTagging({
+            video_id: videoitem.item.id,
+            tag_id: item.id,
+          })
+        );
+      });
+    }
+
+    if (tags.length > 0) {
+      tags.forEach((item) => {
+        dispatch(
+          videoTagging({
+            video_id: videoitem.item.id,
+            tag_id: item.id,
+          })
+        );
+      });
+    }
+
+
   };
 
   const changeVideoStatus = () => {
@@ -79,10 +96,6 @@ const TagsInput = ({ videoitem }) => {
     setVideoStatus(!videoStatus);
   };
 
-  // useEffect(() => {
-  //   setTags([...tags, { name: event.target.value }]);
-  // }, [tagAddStore])
-
   // Tag initialization
   useEffect(() => {
     tagAddStore.data.name &&
@@ -92,7 +105,7 @@ const TagsInput = ({ videoitem }) => {
       ]);
   }, [tagAddStore]);
 
-  console.log("Tag Store", tagAddStore.data.name);
+  console.log("Tags", tags);
 
   return (
     <>

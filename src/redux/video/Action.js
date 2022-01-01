@@ -37,7 +37,6 @@ export const videoList = (
 };
 
 // Video Tagging
-
 export const videoTagging = (
   params = {
     video_id: "",
@@ -58,6 +57,24 @@ export const videoTagging = (
           data: response.data,
         });
       })
+      .catch((err) => console.log(err + "action"));
+  };
+};
+
+// Video Detach Tagging
+export const detachTagging = (
+  params = {
+    video_id: "",
+    tag_id: "",
+  }
+) => {
+  return (dispatch) => {
+    return ApiResponse("/detachtagging", {
+      dispatch,
+      data: {...params},
+      method: "post",
+    })
+      .then((response) => console.log(response.data))
       .catch((err) => console.log(err + "action"));
   };
 };

@@ -8,7 +8,7 @@ const VideoItem = ({}) => {
   const location = useLocation();
   const videoitem = location.state;
 
-  console.log(videoitem);
+  // console.log(videoitem);
 
   return (
     <>
